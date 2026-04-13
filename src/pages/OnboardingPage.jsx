@@ -293,7 +293,7 @@ export default function OnboardingPage() {
   const isReview = step === TOTAL_STEPS
 
   return (
-    <div style={{ minHeight: '100vh', background: '#0a0a0a', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '40px 24px' }}>
+    <div style={{ minHeight: '100vh', overflowY: 'auto', background: '#0a0a0a', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '40px 24px' }}>
       <div style={{ width: '100%', maxWidth: 520 }}>
         <div style={{ marginBottom: 32, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <VeloraLogo size={34} textSize={16} />

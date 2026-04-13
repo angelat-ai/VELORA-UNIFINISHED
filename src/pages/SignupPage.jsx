@@ -7,7 +7,7 @@ export default function SignupPage() {
   const [form, setForm] = useState({ name: '', email: '', password: '', confirm: '' })
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const { updateUser } = useAuth()
+  const { loginDirect } = useAuth()
   const nav = useNavigate()
 
   const set = (k, v) => setForm(p => ({ ...p, [k]: v }))
@@ -19,8 +19,8 @@ export default function SignupPage() {
     if (form.password.length < 6) { setError('Password must be at least 6 characters'); return }
     setLoading(true)
     await new Promise(r => setTimeout(r, 800))
-    updateUser({
-      id: 'user_new',
+    loginDirect({
+      id: 'user_' + Date.now(),
       name: form.name,
       email: form.email,
       role: 'user',
@@ -28,15 +28,15 @@ export default function SignupPage() {
       onboardingDone: false,
       followers: 0, following: 0, posts: 0,
     })
-    nav('/loading')
+    nav('/onboarding')
     setLoading(false)
   }
 
   return (
     <div style={{
-      minHeight: '100vh', background: '#0a0a0a',
+      minHeight: '100vh', background: '#0a0a0a', overflowY: 'auto',
       display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-      padding: 24, position: 'relative', overflow: 'hidden',
+      padding: 24, position: 'relative',
     }}>
       <div style={{
         position: 'absolute', top: '30%', left: '50%',

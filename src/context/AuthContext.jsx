@@ -2,7 +2,7 @@ import { createContext, useContext, useState } from 'react'
 
 const AuthContext = createContext(null)
 
-export const DEMO_ACCOUNTS = {
+const DEMO_ACCOUNTS = {
   admin: {
     id: 'admin_001',
     email: 'admin@velora.com',
@@ -11,6 +11,7 @@ export const DEMO_ACCOUNTS = {
     name: 'Velora Admin',
     username: 'velora_admin',
     avatar: null,
+    onboardingDone: true,
   },
   user: {
     id: 'user_001',
@@ -31,14 +32,18 @@ export const DEMO_ACCOUNTS = {
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
 
-  const login = (email, password) => {
+  const loginWithCredentials = (email, password) => {
     for (const acc of Object.values(DEMO_ACCOUNTS)) {
       if (acc.email === email && acc.password === password) {
         setUser(acc)
         return { success: true, user: acc }
       }
     }
-    return { success: false, error: 'Invalid credentials' }
+    return { success: false, error: 'Invalid email or password' }
+  }
+
+  const loginDirect = (userObj) => {
+    setUser(userObj)
   }
 
   const logout = () => setUser(null)
@@ -46,7 +51,7 @@ export function AuthProvider({ children }) {
   const updateUser = (data) => setUser(prev => ({ ...prev, ...data }))
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, updateUser }}>
+    <AuthContext.Provider value={{ user, loginWithCredentials, loginDirect, logout, updateUser }}>
       {children}
     </AuthContext.Provider>
   )
@@ -55,3 +60,5 @@ export function AuthProvider({ children }) {
 export function useAuth() {
   return useContext(AuthContext)
 }
+
+export { DEMO_ACCOUNTS }
